@@ -1,6 +1,9 @@
+"use client"
+
 import { Heart, Search, SlidersHorizontal, Star, Globe, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import Link from "next/link"
 
 const categories = [
   "All",
@@ -321,40 +324,46 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {properties.map((property) => (
-              <Card key={property.id} className="group cursor-pointer border-0 shadow-none">
-                <div className="relative">
-                  <img
-                    src={property.image || "/placeholder.svg"}
-                    alt={property.title}
-                    className="w-full h-64 object-cover rounded-xl"
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute top-3 right-3 text-white hover:text-red-500 p-2"
-                  >
-                    <Heart className="h-5 w-5" />
-                  </Button>
-                  <div className="absolute bottom-3 left-3 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
-                    {property.type} • {property.beds}
-                  </div>
-                </div>
-
-                <div className="pt-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-semibold text-gray-900 truncate">{property.title}</h3>
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 fill-current text-gray-900" />
-                      <span className="text-sm text-gray-900 ml-1">{property.rating}</span>
+              <Link key={property.id} href={`/property/${property.id}`}>
+                <Card className="group cursor-pointer border-0 shadow-none hover:shadow-lg transition-shadow">
+                  <div className="relative">
+                    <img
+                      src={property.image || "/placeholder.svg"}
+                      alt={property.title}
+                      className="w-full h-64 object-cover rounded-xl"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute top-3 right-3 text-white hover:text-red-500 p-2"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }}
+                    >
+                      <Heart className="h-5 w-5" />
+                    </Button>
+                    <div className="absolute bottom-3 left-3 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                      {property.type} • {property.beds}
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">{property.location}</p>
-                  <div className="flex items-baseline">
-                    <span className="font-semibold text-gray-900">${property.price}</span>
-                    <span className="text-sm text-gray-600 ml-1">/ {property.period}</span>
+
+                  <div className="pt-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold text-gray-900 truncate">{property.title}</h3>
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 fill-current text-gray-900" />
+                        <span className="text-sm text-gray-900 ml-1">{property.rating}</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2">{property.location}</p>
+                    <div className="flex items-baseline">
+                      <span className="font-semibold text-gray-900">${property.price}</span>
+                      <span className="text-sm text-gray-600 ml-1">/ {property.period}</span>
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
