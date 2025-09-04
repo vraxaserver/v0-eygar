@@ -1,14 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
-  },
-}
+    images: {
+        domains: ['images.pexels.com', "images.unsplash.com"], // ✅ Add Pexels domain here
+    },
+};
 
-export default nextConfig
+export default nextConfig;
