@@ -7,521 +7,596 @@ import { BookingDetail } from "@/components/dashboard/guests/BookingDetails";
 import { Calendar, History, User } from "lucide-react";
 
 const mockBookings = [
-  {
-    id: '1',
-    checkIn: '2024-12-25',
-    checkOut: '2024-12-30',
-    guests: 4,
-    totalPrice: 1250,
-    status: 'confirmed',
-    property: {
-      id: 'prop1',
-      name: 'Luxury Mountain Cabin',
-      location: 'Aspen, Colorado',
-      image: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=500',
-      rating: 4.9,
-      reviews: 128,
-      amenities: ['WiFi', 'Parking', 'Kitchen', 'Hot Tub', 'Fireplace', 'Mountain View'],
-      description: 'Experience luxury in this stunning mountain cabin featuring panoramic views, modern amenities, and cozy mountain charm. Perfect for families or groups seeking an unforgettable mountain getaway.',
-      rules: [
-        {
-          type: 'safety',
-          title: 'No Smoking',
-          description: 'Smoking is strictly prohibited inside the property'
+    {
+        id: "1",
+        checkIn: "2024-12-25",
+        checkOut: "2024-12-30",
+        guests: 4,
+        totalPrice: 1250,
+        status: "confirmed",
+        property: {
+            id: "prop1",
+            name: "Luxury Mountain Cabin",
+            location: "Aspen, Colorado",
+            image: "https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=500",
+            rating: 4.9,
+            reviews: 128,
+            amenities: [
+                "WiFi",
+                "Parking",
+                "Kitchen",
+                "Hot Tub",
+                "Fireplace",
+                "Mountain View",
+            ],
+            description:
+                "Experience luxury in this stunning mountain cabin featuring panoramic views, modern amenities, and cozy mountain charm. Perfect for families or groups seeking an unforgettable mountain getaway.",
+            rules: [
+                {
+                    type: "safety",
+                    title: "No Smoking",
+                    description:
+                        "Smoking is strictly prohibited inside the property",
+                },
+                {
+                    type: "house",
+                    title: "Pets Welcome",
+                    description:
+                        "Well-behaved pets are welcome with prior approval",
+                },
+                {
+                    type: "time",
+                    title: "Quiet Hours",
+                    description: "Please keep noise to minimum after 10 PM",
+                },
+            ],
         },
-        {
-          type: 'house',
-          title: 'Pets Welcome',
-          description: 'Well-behaved pets are welcome with prior approval'
+        host: {
+            id: "host1",
+            name: "Michael Thompson",
+            avatar: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150",
+            rating: 4.8,
+            reviewCount: 89,
+            memberSince: "2019",
+            bio: "Outdoor enthusiast and local mountain guide. Love sharing the beauty of Aspen with guests and helping them create unforgettable memories.",
+            languages: ["English", "Spanish"],
+            phone: "+1 (555) 123-4567",
+            email: "michael@mountaincabin.com",
+            experiences: [
+                {
+                    id: "exp1",
+                    name: "Guided Mountain Hike",
+                    description:
+                        "Explore hidden trails with breathtaking views. Suitable for all fitness levels.",
+                    image: "https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "3-4 hours",
+                    maxParticipants: 6,
+                    location: "Starting from cabin",
+                    isEligible: true,
+                    requirements: "Minimum 3 nights stay",
+                },
+                {
+                    id: "exp2",
+                    name: "Local Food Tour",
+                    description:
+                        "Discover Aspen's culinary gems with insider recommendations.",
+                    image: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "2-3 hours",
+                    maxParticipants: 4,
+                    location: "Downtown Aspen",
+                    isEligible: true,
+                    requirements: "Available for stays 5+ nights",
+                },
+                {
+                    id: "exp3",
+                    name: "Stargazing Experience",
+                    description:
+                        "Clear mountain skies perfect for astronomy enthusiasts.",
+                    image: "https://images.pexels.com/photos/1435752/pexels-photo-1435752.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "1-2 hours",
+                    maxParticipants: 8,
+                    location: "Cabin deck",
+                    isEligible: false,
+                    requirements: "Available winter months only",
+                },
+            ],
         },
-        {
-          type: 'time',
-          title: 'Quiet Hours',
-          description: 'Please keep noise to minimum after 10 PM'
-        }
-      ]
+        availableCoupons: [
+            {
+                id: "coupon1",
+                title: "Early Bird Special",
+                description:
+                    "Get discount on your next booking when you book 60 days in advance.",
+                code: "EARLY60",
+                discountType: "percentage",
+                discountValue: 15,
+                expiryDate: "2025-03-31",
+                isUsed: false,
+                minSpend: 500,
+            },
+            {
+                id: "coupon2",
+                title: "Loyalty Reward",
+                description:
+                    "Thank you for being a returning guest! Enjoy this special discount.",
+                code: "LOYALTY25",
+                discountType: "fixed",
+                discountValue: 100,
+                expiryDate: "2025-02-15",
+                isUsed: false,
+                minSpend: 800,
+            },
+        ],
     },
-    host: {
-      id: 'host1',
-      name: 'Michael Thompson',
-      avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 4.8,
-      reviewCount: 89,
-      memberSince: '2019',
-      bio: 'Outdoor enthusiast and local mountain guide. Love sharing the beauty of Aspen with guests and helping them create unforgettable memories.',
-      languages: ['English', 'Spanish'],
-      phone: '+1 (555) 123-4567',
-      email: 'michael@mountaincabin.com',
-      experiences: [
-        {
-          id: 'exp1',
-          name: 'Guided Mountain Hike',
-          description: 'Explore hidden trails with breathtaking views. Suitable for all fitness levels.',
-          image: 'https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '3-4 hours',
-          maxParticipants: 6,
-          location: 'Starting from cabin',
-          isEligible: true,
-          requirements: 'Minimum 3 nights stay'
+    {
+        id: "2",
+        checkIn: "2025-01-15",
+        checkOut: "2025-01-20",
+        guests: 2,
+        totalPrice: 875,
+        status: "confirmed",
+        property: {
+            id: "prop2",
+            name: "Oceanview Beach House",
+            location: "Malibu, California",
+            image: "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=500",
+            rating: 4.7,
+            reviews: 94,
+            amenities: [
+                "WiFi",
+                "Pool",
+                "Kitchen",
+                "Beach Access",
+                "Parking",
+                "Air Conditioning",
+            ],
+            description:
+                "Wake up to stunning ocean views in this modern beach house. Direct beach access, private pool, and all the amenities you need for the perfect beach vacation.",
+            rules: [
+                {
+                    type: "safety",
+                    title: "Pool Safety",
+                    description:
+                        "Children must be supervised around the pool area at all times",
+                },
+                {
+                    type: "house",
+                    title: "No Parties",
+                    description: "Events and parties are not permitted",
+                },
+                {
+                    type: "time",
+                    title: "Beach Access Hours",
+                    description: "Private beach access available 6 AM - 8 PM",
+                },
+            ],
         },
-        {
-          id: 'exp2',
-          name: 'Local Food Tour',
-          description: 'Discover Aspen\'s culinary gems with insider recommendations.',
-          image: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '2-3 hours',
-          maxParticipants: 4,
-          location: 'Downtown Aspen',
-          isEligible: true,
-          requirements: 'Available for stays 5+ nights'
+        host: {
+            id: "host2",
+            name: "Sofia Martinez",
+            avatar: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150",
+            rating: 4.9,
+            reviewCount: 156,
+            memberSince: "2018",
+            bio: "Beach lover and hospitality expert. I own several properties along the coast and love helping guests experience the best of California beaches.",
+            languages: ["English", "Spanish", "French"],
+            phone: "+1 (555) 987-6543",
+            email: "sofia@beachhouse.com",
+            experiences: [
+                {
+                    id: "exp4",
+                    name: "Surf Lesson",
+                    description:
+                        "Learn to surf with professional instructor on our private beach.",
+                    image: "https://images.pexels.com/photos/390051/surfer-wave-sunset-the-indian-ocean-390051.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "2 hours",
+                    maxParticipants: 4,
+                    location: "Private beach",
+                    isEligible: true,
+                    requirements: "Minimum 2 nights stay",
+                },
+                {
+                    id: "exp5",
+                    name: "Beach Picnic Setup",
+                    description:
+                        "Romantic beach picnic with gourmet food and sunset views.",
+                    image: "https://images.pexels.com/photos/1482030/pexels-photo-1482030.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "3 hours",
+                    maxParticipants: 2,
+                    location: "Private beach",
+                    isEligible: true,
+                    requirements: "Available for couples",
+                },
+            ],
         },
-        {
-          id: 'exp3',
-          name: 'Stargazing Experience',
-          description: 'Clear mountain skies perfect for astronomy enthusiasts.',
-          image: 'https://images.pexels.com/photos/1435752/pexels-photo-1435752.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '1-2 hours',
-          maxParticipants: 8,
-          location: 'Cabin deck',
-          isEligible: false,
-          requirements: 'Available winter months only'
-        }
-      ]
+        availableCoupons: [
+            {
+                id: "coupon3",
+                title: "Summer Special",
+                description:
+                    "Save on summer bookings at any of our beach properties.",
+                code: "SUMMER20",
+                discountType: "percentage",
+                discountValue: 20,
+                expiryDate: "2025-08-31",
+                isUsed: false,
+                minSpend: 600,
+            },
+        ],
     },
-    availableCoupons: [
-      {
-        id: 'coupon1',
-        title: 'Early Bird Special',
-        description: 'Get discount on your next booking when you book 60 days in advance.',
-        code: 'EARLY60',
-        discountType: 'percentage',
-        discountValue: 15,
-        expiryDate: '2025-03-31',
-        isUsed: false,
-        minSpend: 500
-      },
-      {
-        id: 'coupon2',
-        title: 'Loyalty Reward',
-        description: 'Thank you for being a returning guest! Enjoy this special discount.',
-        code: 'LOYALTY25',
-        discountType: 'fixed',
-        discountValue: 100,
-        expiryDate: '2025-02-15',
-        isUsed: false,
-        minSpend: 800
-      }
-    ]
-  },
-  {
-    id: '2',
-    checkIn: '2025-01-15',
-    checkOut: '2025-01-20',
-    guests: 2,
-    totalPrice: 875,
-    status: 'confirmed',
-    property: {
-      id: 'prop2',
-      name: 'Oceanview Beach House',
-      location: 'Malibu, California',
-      image: 'https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=500',
-      rating: 4.7,
-      reviews: 94,
-      amenities: ['WiFi', 'Pool', 'Kitchen', 'Beach Access', 'Parking', 'Air Conditioning'],
-      description: 'Wake up to stunning ocean views in this modern beach house. Direct beach access, private pool, and all the amenities you need for the perfect beach vacation.',
-      rules: [
-        {
-          type: 'safety',
-          title: 'Pool Safety',
-          description: 'Children must be supervised around the pool area at all times'
+    {
+        id: "3",
+        checkIn: "2024-10-15",
+        checkOut: "2024-10-18",
+        guests: 3,
+        totalPrice: 540,
+        status: "completed",
+        property: {
+            id: "prop3",
+            name: "Downtown Loft",
+            location: "New York, NY",
+            image: "https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=500",
+            rating: 4.6,
+            reviews: 203,
+            amenities: [
+                "WiFi",
+                "Kitchen",
+                "Workspace",
+                "Laundry",
+                "Gym Access",
+            ],
+            description:
+                "Modern loft in the heart of downtown with easy access to restaurants, shopping, and public transportation. Perfect for business travelers and city explorers.",
+            rules: [
+                {
+                    type: "house",
+                    title: "No Smoking",
+                    description: "This is a non-smoking property",
+                },
+                {
+                    type: "time",
+                    title: "Building Quiet Hours",
+                    description: "Building quiet hours from 10 PM to 8 AM",
+                },
+            ],
         },
-        {
-          type: 'house',
-          title: 'No Parties',
-          description: 'Events and parties are not permitted'
+        host: {
+            id: "host3",
+            name: "David Chen",
+            avatar: "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=150",
+            rating: 4.7,
+            reviewCount: 67,
+            memberSince: "2020",
+            bio: "NYC local and real estate enthusiast. I love helping visitors discover the best the city has to offer.",
+            languages: ["English", "Mandarin"],
+            phone: "+1 (555) 456-7890",
+            email: "david@nycloft.com",
+            experiences: [
+                {
+                    id: "exp6",
+                    name: "Broadway Show Tickets",
+                    description:
+                        "Discounted tickets to popular Broadway shows through host connections.",
+                    image: "https://images.pexels.com/photos/713149/pexels-photo-713149.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "3 hours",
+                    maxParticipants: 4,
+                    location: "Theater District",
+                    isEligible: false,
+                    requirements: "Booking must be 7+ days",
+                },
+            ],
         },
-        {
-          type: 'time',
-          title: 'Beach Access Hours',
-          description: 'Private beach access available 6 AM - 8 PM'
-        }
-      ]
+        availableCoupons: [],
     },
-    host: {
-      id: 'host2',
-      name: 'Sofia Martinez',
-      avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 4.9,
-      reviewCount: 156,
-      memberSince: '2018',
-      bio: 'Beach lover and hospitality expert. I own several properties along the coast and love helping guests experience the best of California beaches.',
-      languages: ['English', 'Spanish', 'French'],
-      phone: '+1 (555) 987-6543',
-      email: 'sofia@beachhouse.com',
-      experiences: [
-        {
-          id: 'exp4',
-          name: 'Surf Lesson',
-          description: 'Learn to surf with professional instructor on our private beach.',
-          image: 'https://images.pexels.com/photos/390051/surfer-wave-sunset-the-indian-ocean-390051.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '2 hours',
-          maxParticipants: 4,
-          location: 'Private beach',
-          isEligible: true,
-          requirements: 'Minimum 2 nights stay'
+    {
+        id: "4",
+        checkIn: "2025-02-10",
+        checkOut: "2025-02-14",
+        guests: 2,
+        totalPrice: 680,
+        status: "confirmed",
+        property: {
+            id: "prop4",
+            name: "Cozy City Apartment",
+            location: "Portland, Oregon",
+            image: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=500",
+            rating: 4.5,
+            reviews: 76,
+            amenities: [
+                "WiFi",
+                "Kitchen",
+                "Workspace",
+                "Bike Storage",
+                "Coffee Machine",
+            ],
+            description:
+                "Charming apartment in Portland's vibrant downtown. Walking distance to food trucks, breweries, and cultural attractions. Perfect for exploring the city.",
+            rules: [
+                {
+                    type: "house",
+                    title: "No Smoking",
+                    description:
+                        "Smoking is not allowed anywhere on the property",
+                },
+                {
+                    type: "time",
+                    title: "Check-in Instructions",
+                    description:
+                        "Self check-in available after 3 PM using keypad",
+                },
+            ],
         },
-        {
-          id: 'exp5',
-          name: 'Beach Picnic Setup',
-          description: 'Romantic beach picnic with gourmet food and sunset views.',
-          image: 'https://images.pexels.com/photos/1482030/pexels-photo-1482030.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '3 hours',
-          maxParticipants: 2,
-          location: 'Private beach',
-          isEligible: true,
-          requirements: 'Available for couples'
-        }
-      ]
+        host: {
+            id: "host4",
+            name: "Emma Wilson",
+            avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150",
+            rating: 4.6,
+            reviewCount: 42,
+            memberSince: "2021",
+            bio: "Portland native who loves sharing the city's unique culture with visitors. Coffee enthusiast and local food expert.",
+            languages: ["English"],
+            phone: "+1 (555) 234-5678",
+            email: "emma@portlandstay.com",
+            experiences: [
+                {
+                    id: "exp7",
+                    name: "Food Cart Tour",
+                    description:
+                        "Explore Portland's famous food cart scene with insider recommendations.",
+                    image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "2-3 hours",
+                    maxParticipants: 4,
+                    location: "Various food cart pods",
+                    isEligible: true,
+                    requirements: "Available for all guests",
+                },
+                {
+                    id: "exp8",
+                    name: "Brewery Walking Tour",
+                    description:
+                        "Visit 3 local breweries and learn about Portland's craft beer culture.",
+                    image: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "4 hours",
+                    maxParticipants: 6,
+                    location: "Downtown Portland",
+                    isEligible: true,
+                    requirements: "Must be 21+ years old",
+                },
+            ],
+        },
+        availableCoupons: [
+            {
+                id: "coupon4",
+                title: "Portland Explorer",
+                description:
+                    "Get 10% off your next Portland booking when you book within 30 days.",
+                code: "PORTLAND10",
+                discountType: "percentage",
+                discountValue: 10,
+                expiryDate: "2025-03-15",
+                isUsed: false,
+                minSpend: 300,
+            },
+        ],
     },
-    availableCoupons: [
-      {
-        id: 'coupon3',
-        title: 'Summer Special',
-        description: 'Save on summer bookings at any of our beach properties.',
-        code: 'SUMMER20',
-        discountType: 'percentage',
-        discountValue: 20,
-        expiryDate: '2025-08-31',
-        isUsed: false,
-        minSpend: 600
-      }
-    ]
-  },
-  {
-    id: '3',
-    checkIn: '2024-10-15',
-    checkOut: '2024-10-18',
-    guests: 3,
-    totalPrice: 540,
-    status: 'completed',
-    property: {
-      id: 'prop3',
-      name: 'Downtown Loft',
-      location: 'New York, NY',
-      image: 'https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=500',
-      rating: 4.6,
-      reviews: 203,
-      amenities: ['WiFi', 'Kitchen', 'Workspace', 'Laundry', 'Gym Access'],
-      description: 'Modern loft in the heart of downtown with easy access to restaurants, shopping, and public transportation. Perfect for business travelers and city explorers.',
-      rules: [
-        {
-          type: 'house',
-          title: 'No Smoking',
-          description: 'This is a non-smoking property'
+    {
+        id: "5",
+        checkIn: "2025-09-01",
+        checkOut: "2025-09-05",
+        guests: 6,
+        totalPrice: 1890,
+        status: "confirmed",
+        property: {
+            id: "prop5",
+            name: "Lakeside Retreat",
+            location: "Lake Tahoe, Nevada",
+            image: "https://images.pexels.com/photos/1029604/pexels-photo-1029604.jpeg?auto=compress&cs=tinysrgb&w=500",
+            rating: 4.8,
+            reviews: 145,
+            amenities: [
+                "WiFi",
+                "Kitchen",
+                "Hot Tub",
+                "Kayaks",
+                "Fire Pit",
+                "Lake Access",
+                "Parking",
+            ],
+            description:
+                "Stunning lakeside retreat with private dock and panoramic mountain views. Perfect for large groups seeking adventure and relaxation by the water.",
+            rules: [
+                {
+                    type: "safety",
+                    title: "Water Safety",
+                    description:
+                        "Life jackets required for all water activities",
+                },
+                {
+                    type: "house",
+                    title: "Pet Policy",
+                    description: "Pets allowed with $50 cleaning fee",
+                },
+                {
+                    type: "time",
+                    title: "Fire Pit Hours",
+                    description: "Fire pit use permitted until 11 PM",
+                },
+            ],
         },
-        {
-          type: 'time',
-          title: 'Building Quiet Hours',
-          description: 'Building quiet hours from 10 PM to 8 AM'
-        }
-      ]
+        host: {
+            id: "host5",
+            name: "Robert & Lisa Johnson",
+            avatar: "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=150",
+            rating: 4.9,
+            reviewCount: 234,
+            memberSince: "2017",
+            bio: "Retired couple who love hosting families and groups at our lakeside property. We enjoy sharing our knowledge of the area and helping guests create lasting memories.",
+            languages: ["English"],
+            phone: "+1 (555) 345-6789",
+            email: "johnson@lakeretreat.com",
+            experiences: [
+                {
+                    id: "exp9",
+                    name: "Guided Kayak Tour",
+                    description:
+                        "Explore hidden coves and pristine waters with our complimentary kayaks.",
+                    image: "https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "2-4 hours",
+                    maxParticipants: 6,
+                    location: "Private dock",
+                    isEligible: true,
+                    requirements: "Included with booking",
+                },
+                {
+                    id: "exp10",
+                    name: "Sunset Photography Session",
+                    description:
+                        "Professional photographer captures your group against stunning lake sunsets.",
+                    image: "https://images.pexels.com/photos/1029604/pexels-photo-1029604.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "1 hour",
+                    maxParticipants: 8,
+                    location: "Lakeside deck",
+                    isEligible: true,
+                    requirements: "Available for 5+ night stays",
+                },
+                {
+                    id: "exp11",
+                    name: "Mountain Hiking Guide",
+                    description:
+                        "Local trail recommendations and guided hikes to scenic viewpoints.",
+                    image: "https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "3-5 hours",
+                    maxParticipants: 6,
+                    location: "Various trailheads",
+                    isEligible: false,
+                    requirements: "Available summer months only",
+                },
+            ],
+        },
+        availableCoupons: [
+            {
+                id: "coupon5",
+                title: "Group Discount",
+                description:
+                    "Special discount for groups of 6 or more guests on future bookings.",
+                code: "GROUP15",
+                discountType: "percentage",
+                discountValue: 15,
+                expiryDate: "2025-06-30",
+                isUsed: false,
+                minSpend: 1000,
+            },
+            {
+                id: "coupon6",
+                title: "Return Guest Bonus",
+                description:
+                    "Thank you for choosing us again! Enjoy this exclusive return guest offer.",
+                code: "RETURN50",
+                discountType: "fixed",
+                discountValue: 50,
+                expiryDate: "2025-04-30",
+                isUsed: false,
+                minSpend: 500,
+            },
+        ],
     },
-    host: {
-      id: 'host3',
-      name: 'David Chen',
-      avatar: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 4.7,
-      reviewCount: 67,
-      memberSince: '2020',
-      bio: 'NYC local and real estate enthusiast. I love helping visitors discover the best the city has to offer.',
-      languages: ['English', 'Mandarin'],
-      phone: '+1 (555) 456-7890',
-      email: 'david@nycloft.com',
-      experiences: [
-        {
-          id: 'exp6',
-          name: 'Broadway Show Tickets',
-          description: 'Discounted tickets to popular Broadway shows through host connections.',
-          image: 'https://images.pexels.com/photos/713149/pexels-photo-713149.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '3 hours',
-          maxParticipants: 4,
-          location: 'Theater District',
-          isEligible: false,
-          requirements: 'Booking must be 7+ days'
-        }
-      ]
+    {
+        id: "6",
+        checkIn: "2025-09-18",
+        checkOut: "2025-09-21",
+        guests: 2,
+        totalPrice: 420,
+        status: "confirmed",
+        property: {
+            id: "prop6",
+            name: "Historic Brownstone",
+            location: "Boston, Massachusetts",
+            image: "https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&w=500",
+            rating: 4.4,
+            reviews: 89,
+            amenities: [
+                "WiFi",
+                "Kitchen",
+                "Fireplace",
+                "Garden",
+                "Parking",
+                "Historic Character",
+            ],
+            description:
+                "Beautiful 19th-century brownstone in historic Back Bay. Experience Boston's rich history while enjoying modern comforts in this charming neighborhood.",
+            rules: [
+                {
+                    type: "house",
+                    title: "Historic Property Care",
+                    description:
+                        "Please treat this historic property with extra care",
+                },
+                {
+                    type: "time",
+                    title: "Neighborhood Quiet Hours",
+                    description: "Residential area - quiet hours 9 PM to 8 AM",
+                },
+                {
+                    type: "safety",
+                    title: "Fireplace Usage",
+                    description:
+                        "Fireplace available with host approval and safety briefing",
+                },
+            ],
+        },
+        host: {
+            id: "host6",
+            name: "Margaret O'Sullivan",
+            avatar: "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150",
+            rating: 4.7,
+            reviewCount: 78,
+            memberSince: "2019",
+            bio: "Boston historian and longtime resident. I love sharing the stories and hidden gems of this wonderful city with my guests.",
+            languages: ["English", "Irish Gaelic"],
+            phone: "+1 (555) 567-8901",
+            email: "margaret@bostonbrownstone.com",
+            experiences: [
+                {
+                    id: "exp12",
+                    name: "Freedom Trail Walking Tour",
+                    description:
+                        "Personal guided tour of Boston's famous Freedom Trail with historical insights.",
+                    image: "https://images.pexels.com/photos/2034851/pexels-photo-2034851.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "3 hours",
+                    maxParticipants: 4,
+                    location: "Starting from property",
+                    isEligible: true,
+                    requirements: "Available for all guests",
+                },
+                {
+                    id: "exp13",
+                    name: "Tea & History Session",
+                    description:
+                        "Afternoon tea with stories about the brownstone and neighborhood history.",
+                    image: "https://images.pexels.com/photos/1793035/pexels-photo-1793035.jpeg?auto=compress&cs=tinysrgb&w=300",
+                    duration: "1 hour",
+                    maxParticipants: 4,
+                    location: "Property garden",
+                    isEligible: true,
+                    requirements: "Available upon request",
+                },
+            ],
+        },
+        availableCoupons: [
+            {
+                id: "coupon7",
+                title: "History Buff Special",
+                description:
+                    "Discount for guests interested in Boston's rich historical heritage.",
+                code: "HISTORY20",
+                discountType: "percentage",
+                discountValue: 20,
+                expiryDate: "2025-07-04",
+                isUsed: false,
+                minSpend: 400,
+            },
+        ],
     },
-    availableCoupons: []
-  },
-  {
-    id: '4',
-    checkIn: '2025-02-10',
-    checkOut: '2025-02-14',
-    guests: 2,
-    totalPrice: 680,
-    status: 'confirmed',
-    property: {
-      id: 'prop4',
-      name: 'Cozy City Apartment',
-      location: 'Portland, Oregon',
-      image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=500',
-      rating: 4.5,
-      reviews: 76,
-      amenities: ['WiFi', 'Kitchen', 'Workspace', 'Bike Storage', 'Coffee Machine'],
-      description: 'Charming apartment in Portland\'s vibrant downtown. Walking distance to food trucks, breweries, and cultural attractions. Perfect for exploring the city.',
-      rules: [
-        {
-          type: 'house',
-          title: 'No Smoking',
-          description: 'Smoking is not allowed anywhere on the property'
-        },
-        {
-          type: 'time',
-          title: 'Check-in Instructions',
-          description: 'Self check-in available after 3 PM using keypad'
-        }
-      ]
-    },
-    host: {
-      id: 'host4',
-      name: 'Emma Wilson',
-      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 4.6,
-      reviewCount: 42,
-      memberSince: '2021',
-      bio: 'Portland native who loves sharing the city\'s unique culture with visitors. Coffee enthusiast and local food expert.',
-      languages: ['English'],
-      phone: '+1 (555) 234-5678',
-      email: 'emma@portlandstay.com',
-      experiences: [
-        {
-          id: 'exp7',
-          name: 'Food Cart Tour',
-          description: 'Explore Portland\'s famous food cart scene with insider recommendations.',
-          image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '2-3 hours',
-          maxParticipants: 4,
-          location: 'Various food cart pods',
-          isEligible: true,
-          requirements: 'Available for all guests'
-        },
-        {
-          id: 'exp8',
-          name: 'Brewery Walking Tour',
-          description: 'Visit 3 local breweries and learn about Portland\'s craft beer culture.',
-          image: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '4 hours',
-          maxParticipants: 6,
-          location: 'Downtown Portland',
-          isEligible: true,
-          requirements: 'Must be 21+ years old'
-        }
-      ]
-    },
-    availableCoupons: [
-      {
-        id: 'coupon4',
-        title: 'Portland Explorer',
-        description: 'Get 10% off your next Portland booking when you book within 30 days.',
-        code: 'PORTLAND10',
-        discountType: 'percentage',
-        discountValue: 10,
-        expiryDate: '2025-03-15',
-        isUsed: false,
-        minSpend: 300
-      }
-    ]
-  },
-  {
-    id: '5',
-    checkIn: '2025-09-01',
-    checkOut: '2025-09-05',
-    guests: 6,
-    totalPrice: 1890,
-    status: 'confirmed',
-    property: {
-      id: 'prop5',
-      name: 'Lakeside Retreat',
-      location: 'Lake Tahoe, Nevada',
-      image: 'https://images.pexels.com/photos/1029604/pexels-photo-1029604.jpeg?auto=compress&cs=tinysrgb&w=500',
-      rating: 4.8,
-      reviews: 145,
-      amenities: ['WiFi', 'Kitchen', 'Hot Tub', 'Kayaks', 'Fire Pit', 'Lake Access', 'Parking'],
-      description: 'Stunning lakeside retreat with private dock and panoramic mountain views. Perfect for large groups seeking adventure and relaxation by the water.',
-      rules: [
-        {
-          type: 'safety',
-          title: 'Water Safety',
-          description: 'Life jackets required for all water activities'
-        },
-        {
-          type: 'house',
-          title: 'Pet Policy',
-          description: 'Pets allowed with $50 cleaning fee'
-        },
-        {
-          type: 'time',
-          title: 'Fire Pit Hours',
-          description: 'Fire pit use permitted until 11 PM'
-        }
-      ]
-    },
-    host: {
-      id: 'host5',
-      name: 'Robert & Lisa Johnson',
-      avatar: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 4.9,
-      reviewCount: 234,
-      memberSince: '2017',
-      bio: 'Retired couple who love hosting families and groups at our lakeside property. We enjoy sharing our knowledge of the area and helping guests create lasting memories.',
-      languages: ['English'],
-      phone: '+1 (555) 345-6789',
-      email: 'johnson@lakeretreat.com',
-      experiences: [
-        {
-          id: 'exp9',
-          name: 'Guided Kayak Tour',
-          description: 'Explore hidden coves and pristine waters with our complimentary kayaks.',
-          image: 'https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '2-4 hours',
-          maxParticipants: 6,
-          location: 'Private dock',
-          isEligible: true,
-          requirements: 'Included with booking'
-        },
-        {
-          id: 'exp10',
-          name: 'Sunset Photography Session',
-          description: 'Professional photographer captures your group against stunning lake sunsets.',
-          image: 'https://images.pexels.com/photos/1029604/pexels-photo-1029604.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '1 hour',
-          maxParticipants: 8,
-          location: 'Lakeside deck',
-          isEligible: true,
-          requirements: 'Available for 5+ night stays'
-        },
-        {
-          id: 'exp11',
-          name: 'Mountain Hiking Guide',
-          description: 'Local trail recommendations and guided hikes to scenic viewpoints.',
-          image: 'https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '3-5 hours',
-          maxParticipants: 6,
-          location: 'Various trailheads',
-          isEligible: false,
-          requirements: 'Available summer months only'
-        }
-      ]
-    },
-    availableCoupons: [
-      {
-        id: 'coupon5',
-        title: 'Group Discount',
-        description: 'Special discount for groups of 6 or more guests on future bookings.',
-        code: 'GROUP15',
-        discountType: 'percentage',
-        discountValue: 15,
-        expiryDate: '2025-06-30',
-        isUsed: false,
-        minSpend: 1000
-      },
-      {
-        id: 'coupon6',
-        title: 'Return Guest Bonus',
-        description: 'Thank you for choosing us again! Enjoy this exclusive return guest offer.',
-        code: 'RETURN50',
-        discountType: 'fixed',
-        discountValue: 50,
-        expiryDate: '2025-04-30',
-        isUsed: false,
-        minSpend: 500
-      }
-    ]
-  },
-  {
-    id: '6',
-    checkIn: '2025-09-18',
-    checkOut: '2025-09-21',
-    guests: 2,
-    totalPrice: 420,
-    status: 'confirmed',
-    property: {
-      id: 'prop6',
-      name: 'Historic Brownstone',
-      location: 'Boston, Massachusetts',
-      image: 'https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&w=500',
-      rating: 4.4,
-      reviews: 89,
-      amenities: ['WiFi', 'Kitchen', 'Fireplace', 'Garden', 'Parking', 'Historic Character'],
-      description: 'Beautiful 19th-century brownstone in historic Back Bay. Experience Boston\'s rich history while enjoying modern comforts in this charming neighborhood.',
-      rules: [
-        {
-          type: 'house',
-          title: 'Historic Property Care',
-          description: 'Please treat this historic property with extra care'
-        },
-        {
-          type: 'time',
-          title: 'Neighborhood Quiet Hours',
-          description: 'Residential area - quiet hours 9 PM to 8 AM'
-        },
-        {
-          type: 'safety',
-          title: 'Fireplace Usage',
-          description: 'Fireplace available with host approval and safety briefing'
-        }
-      ]
-    },
-    host: {
-      id: 'host6',
-      name: 'Margaret O\'Sullivan',
-      avatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 4.7,
-      reviewCount: 78,
-      memberSince: '2019',
-      bio: 'Boston historian and longtime resident. I love sharing the stories and hidden gems of this wonderful city with my guests.',
-      languages: ['English', 'Irish Gaelic'],
-      phone: '+1 (555) 567-8901',
-      email: 'margaret@bostonbrownstone.com',
-      experiences: [
-        {
-          id: 'exp12',
-          name: 'Freedom Trail Walking Tour',
-          description: 'Personal guided tour of Boston\'s famous Freedom Trail with historical insights.',
-          image: 'https://images.pexels.com/photos/2034851/pexels-photo-2034851.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '3 hours',
-          maxParticipants: 4,
-          location: 'Starting from property',
-          isEligible: true,
-          requirements: 'Available for all guests'
-        },
-        {
-          id: 'exp13',
-          name: 'Tea & History Session',
-          description: 'Afternoon tea with stories about the brownstone and neighborhood history.',
-          image: 'https://images.pexels.com/photos/1793035/pexels-photo-1793035.jpeg?auto=compress&cs=tinysrgb&w=300',
-          duration: '1 hour',
-          maxParticipants: 4,
-          location: 'Property garden',
-          isEligible: true,
-          requirements: 'Available upon request'
-        }
-      ]
-    },
-    availableCoupons: [
-      {
-        id: 'coupon7',
-        title: 'History Buff Special',
-        description: 'Discount for guests interested in Boston\'s rich historical heritage.',
-        code: 'HISTORY20',
-        discountType: 'percentage',
-        discountValue: 20,
-        expiryDate: '2025-07-04',
-        isUsed: false,
-        minSpend: 400
-      }
-    ]
-  }
 ];
 
 export default function GuestDashboard() {

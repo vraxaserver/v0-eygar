@@ -12,13 +12,16 @@ import {
 
 import Footer from "@/components/layout/Footer";
 import PropertyCard from "@/components/properties/PropertyCard";
-import { mockProperties, mockExperiences } from "@/data/properties";
+// import { mockProperties, mockExperiences } from "@/data/properties";
+import { useGetPropertiesQuery } from "@/store/features/propertyApi";
 import SearchBar from "@/components/search/SearchBar";
 
 export default function PropertyListings() {
     const [viewMode, setViewMode] = useState("grid");
     const { filters } = useState();
     const [category, setCategory] = useState("");
+
+    const {data: properties, isLoading, error} = useGetPropertiesQuery()
 
     const handleSearch = () => {
         console.log("Searching with filters:", filters);
@@ -41,105 +44,6 @@ export default function PropertyListings() {
         return count;
     };
 
-    // const properties = [
-    //     {
-    //         id: 1,
-    //         title: "River Laune in Main st Killorglin",
-    //         type: "House",
-    //         beds: 5,
-    //         price: 750,
-    //         rating: 4.9,
-    //         reviews: 127,
-    //         image: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800",
-    //         location: "Killorglin, Ireland",
-    //         isLiked: false,
-    //     },
-    //     {
-    //         id: 2,
-    //         title: "Historic and Stunning, Large Castle",
-    //         type: "House",
-    //         beds: 6,
-    //         price: 640.44,
-    //         rating: 4.8,
-    //         reviews: 89,
-    //         image: "https://images.pexels.com/photos/1454806/pexels-photo-1454806.jpeg?auto=compress&cs=tinysrgb&w=800",
-    //         location: "Scottish Highlands",
-    //         isLiked: true,
-    //     },
-    //     {
-    //         id: 3,
-    //         title: "Lux Loft Apartment Nr City Centre",
-    //         type: "Private Room",
-    //         beds: 2,
-    //         price: 989.78,
-    //         rating: 4.95,
-    //         reviews: 203,
-    //         image: "https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=800",
-    //         location: "Dublin, Ireland",
-    //         isLiked: false,
-    //     },
-    //     {
-    //         id: 4,
-    //         title: "Historic Georgian Lakeside Manor",
-    //         type: "House",
-    //         beds: 3,
-    //         price: 756.89,
-    //         rating: 4.7,
-    //         reviews: 156,
-    //         image: "https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=800",
-    //         location: "Lake District, UK",
-    //         isLiked: false,
-    //     },
-    //     {
-    //         id: 5,
-    //         title: "Adorable townhouse near MFL",
-    //         type: "Shared Room",
-    //         beds: 1,
-    //         price: 550,
-    //         rating: 4.6,
-    //         reviews: 78,
-    //         image: "https://images.pexels.com/photos/1454804/pexels-photo-1454804.jpeg?auto=compress&cs=tinysrgb&w=800",
-    //         location: "Philadelphia, PA",
-    //         isLiked: true,
-    //     },
-    //     {
-    //         id: 6,
-    //         title: "Immaculate Lakefront Condo",
-    //         type: "Shared Room",
-    //         beds: 3,
-    //         price: 500,
-    //         rating: 4.8,
-    //         reviews: 92,
-    //         image: "https://images.pexels.com/photos/2121121/pexels-photo-2121121.jpeg?auto=compress&cs=tinysrgb&w=800",
-    //         location: "Lake Tahoe, CA",
-    //         isLiked: false,
-    //     },
-    //     {
-    //         id: 7,
-    //         title: "Classic Harlem Brownstone",
-    //         type: "Private Room",
-    //         beds: 2,
-    //         price: 250,
-    //         rating: 4.9,
-    //         reviews: 145,
-    //         image: "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=800",
-    //         location: "New York, NY",
-    //         isLiked: false,
-    //     },
-    //     {
-    //         id: 8,
-    //         title: "Off-grid itHouse and stunning views",
-    //         type: "House",
-    //         beds: 3,
-    //         price: 135,
-    //         rating: 4.7,
-    //         reviews: 67,
-    //         image: "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=800",
-    //         location: "Big Sur, CA",
-    //         isLiked: true,
-    //     },
-    // ];
-
     const categories = [
         "Beachfront",
         "Cabins",
@@ -152,8 +56,6 @@ export default function PropertyListings() {
         "Islands",
         "Lakefront",
     ];
-
-    const properties = mockProperties;
 
     return (
         <div>
@@ -194,9 +96,10 @@ export default function PropertyListings() {
 
             {/* Main Content */}
             <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8 py-8">
+                {isLoading && <div className="center">Loading..</div>}
                 {viewMode === "grid" && (
-                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4 md:gap-6">
-                        {properties.map((property) => (
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                        {properties && properties.map((property) => (
                             <PropertyCard
                                 className="py-0"
                                 key={property.id}
@@ -208,7 +111,7 @@ export default function PropertyListings() {
 
                 {viewMode === "list" && (
                     <div className="space-y-4 sm:space-y-6">
-                        {properties.map((property) => (
+                        {properties && properties.map((property) => (
                             <Card
                                 key={property.id}
                                 className="group cursor-pointer border border-gray-200 hover:shadow-lg transition-all duration-300"

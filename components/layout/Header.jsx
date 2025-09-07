@@ -64,7 +64,7 @@ export default function Header({ profile }) {
                             href="/experiences"
                             className="text-foreground hover:text-primary"
                         >
-                            {t("nav.experiences")}
+                            {t("nav.complimentary_activities")}
                         </Link>
                         <Link
                             href="/search_by_image"
