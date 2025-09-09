@@ -1,4 +1,6 @@
-export const mockProperties = [{
+export const mockProperties = [
+
+    {
         id: 1,
         title: 'Private Room in Downtown Apartment',
         description: 'Beautiful private room in the heart of the city with modern amenities and great access to public transportation.',
@@ -74,6 +76,7 @@ export const mockProperties = [{
         createdAt: '2023-01-15T00:00:00Z',
         updatedAt: '2024-01-15T00:00:00Z'
     },
+
     {
         id: 2,
         title: 'River Laune in Main st Killorglin Co Kerry',

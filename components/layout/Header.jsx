@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Globe, Menu, User, LogOut, Settings, Heart } from "lucide-react";
+import React from "react";
+import { Menu, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,12 +16,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { useLanguage, useTranslation } from "@/lib/i18n";
 
-export default function Header({ profile }) {
+export default function Header() {
     const router = useRouter();
-    const { language, changeLanguage } = useLanguage();
-    const { t } = useTranslation();
 
     const handleLogin = () => {
         router.push("/auth/login");
@@ -29,10 +26,6 @@ export default function Header({ profile }) {
 
     const handleSignup = () => {
         router.push("/auth/signup");
-    };
-
-    const handleLanguageChange = (newLanguage) => {
-        changeLanguage(newLanguage);
     };
 
     return (
@@ -58,65 +51,13 @@ export default function Header({ profile }) {
                             href="/properties"
                             className="text-foreground hover:text-primary"
                         >
-                            {t("nav.placesToStay")}
+                            Places to Stay
                         </Link>
-                        <Link
-                            href="/experiences"
-                            className="text-foreground hover:text-primary"
-                        >
-                            {t("nav.complimentary_activities")}
-                        </Link>
-                        <Link
-                            href="/search_by_image"
-                            className="text-foreground hover:text-primary"
-                        >
-                            {t("nav.place_by_image")}
-                        </Link>
+                        
                     </nav>
 
                     {/* Right side controls */}
                     <div className="flex items-center space-x-4">
-                        {profile === "host" ? (
-                            <Link
-                                href="/become-a-traveller"
-                                className="text-foreground hover:text-primary"
-                            >
-                                Become a traveller
-                            </Link>
-                        ) : (
-                            <Link
-                                href="/become-a-host"
-                                className="text-foreground hover:text-primary"
-                            >
-                                {t("nav.becomeHost")}
-                            </Link>
-                        )}
-
-                        {/* Language selector */}
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="hidden sm:flex"
-                                >
-                                    <Globe className="h-4 w-4 mr-2" />
-                                    {language === "ar" ? "ع" : "EN"}
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuItem
-                                    onClick={() => handleLanguageChange("en")}
-                                >
-                                    English
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => handleLanguageChange("ar")}
-                                >
-                                    العربية
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
 
                         {/* User menu */}
                         <DropdownMenu>
@@ -133,22 +74,18 @@ export default function Header({ profile }) {
                             <DropdownMenuContent align="end" className="w-56">
                                 <>
                                     <DropdownMenuItem onClick={handleSignup}>
-                                        {t("auth.signup")}
+                                        Signup
                                     </DropdownMenuItem>
                                     <DropdownMenuItem onClick={handleLogin}>
-                                        {t("auth.login")}
+                                        Login
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={handleLogin}>
+                                    <DropdownMenuItem>
                                        <Link href="/bookings">My Bookings</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem
-                                        onClick={() => router.push("/host")}
-                                    >
-                                        {t("nav.becomeHost")}
-                                    </DropdownMenuItem>
+                                    
                                     <DropdownMenuItem>
-                                        {t("nav.helpCenter")}
+                                        Help
                                     </DropdownMenuItem>
                                 </>
                             </DropdownMenuContent>

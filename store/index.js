@@ -1,18 +1,20 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from '@reduxjs/toolkit/query';
-import searchReducer from './slices/searchSlice';
-import { propertyApi } from './features/propertyApi';
+import { propertiesApi } from "@/store/features/propertiesApi";
+import searchReducer from '@/store/slices/searchSlice';
 
 
 export const store = configureStore({
     reducer: {
         search: searchReducer,
-        [propertyApi.reducerPath]: propertyApi.reducer,
-
+        [propertiesApi.reducerPath]: propertiesApi.reducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
-        propertyApi.middleware
-    ])
-});
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'],
+      },
+    })
+      .concat(propertiesApi.middleware),
+})
 
-setupListeners(store.dispatch);
+setupListeners(store.dispatch)
