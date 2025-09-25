@@ -52,9 +52,11 @@ export default function PropertyCard({ property }) {
                     {/* Property Image Carousel */}
                     <div className="relative h-72 w-full">
                         <Image
+                            
                             src={property.images[currentImageIndex] || "/placeholder.svg"}
                             alt={property.title}
                             fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Example sizes
                             className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                     </div>

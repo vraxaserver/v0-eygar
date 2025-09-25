@@ -3,7 +3,7 @@ import ReduxProvider from "@/providers/ReduxProvider";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 
-import "./globals.css";
+import "@/styles/globals.css";
 
 const montserrat = Montserrat({
     subsets: ["latin"],
@@ -28,6 +28,7 @@ export const metadata = {
     title: "EYGAR - Secure Property Rentals",
     description:
         "Government-compliant property rentals with safety badges, free insurance, and unique experiences.",
+    generator: "v0.app",
 };
 
 export default function RootLayout({ children }) {
@@ -40,7 +41,7 @@ export default function RootLayout({ children }) {
                 <ReduxProvider>
                     <div className="min-h-screen">
                         <Header />
-
+                        
                         {/* Main Content */}
                         {children}
 

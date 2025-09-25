@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.NEXT_API_BASE_URL
-import { mockProperties, mockExperiences } from "@/data/properties";
+import { mockProperties } from "@/data/properties";
 
 export async function GET(request) {
     try {

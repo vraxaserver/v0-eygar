@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {Heart, Star, Shield, Gift, Ticket, Users, Bed, Bath} from "lucide-react";
+import {
+    Heart,
+    Star,
+    Shield,
+    Gift,
+    Ticket,
+    Users,
+    Bed,
+    Bath,
+} from "lucide-react";
 import Image from "next/image";
-
 
 export default function FeaturedPropertyCard({ property, layout = "grid" }) {
     const router = useRouter();
@@ -34,7 +42,8 @@ export default function FeaturedPropertyCard({ property, layout = "grid" }) {
         e.preventDefault();
         e.stopPropagation();
         setCurrentImageIndex(
-            (prev) => (prev - 1 + property.images.length) % property.images.length
+            (prev) =>
+                (prev - 1 + property.images.length) % property.images.length
         );
     };
 
@@ -47,9 +56,14 @@ export default function FeaturedPropertyCard({ property, layout = "grid" }) {
                 {/* Property Image */}
                 <div className="relative h-64 overflow-hidden rounded-t-2xl">
                     <Image
-                        src={property.images[currentImageIndex] || "/placeholder.svg"}
+                        src={
+                            property.images[currentImageIndex] ||
+                            "/placeholder.svg"
+                        }
                         alt={property.title}
                         fill
+                        priority   
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Example sizes
                         className="object-cover group-hover:scale-105 transition-transform duration-200 rounded-t-2xl"
                     />
 
@@ -60,7 +74,9 @@ export default function FeaturedPropertyCard({ property, layout = "grid" }) {
                                 <button
                                     key={index}
                                     className={`w-2 h-2 rounded-full transition-colors ${
-                                        index === currentImageIndex ? "bg-white" : "bg-white/50"
+                                        index === currentImageIndex
+                                            ? "bg-white"
+                                            : "bg-white/50"
                                     }`}
                                     onClick={(e) => {
                                         e.preventDefault();
@@ -124,7 +140,9 @@ export default function FeaturedPropertyCard({ property, layout = "grid" }) {
                 >
                     <Heart
                         className={`h-4 w-4 ${
-                            isFavorited ? "fill-red-500 text-red-500" : "text-gray-600"
+                            isFavorited
+                                ? "fill-red-500 text-red-500"
+                                : "text-gray-600"
                         }`}
                     />
                 </Button>
@@ -142,24 +160,29 @@ export default function FeaturedPropertyCard({ property, layout = "grid" }) {
                         </Badge>
                     </div>
                 )}
-
-                {/* Property Title */}
-                <h3 className="absolute pl-3 top-40 w-60 bg-white/60 hover:bg-white font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                    {property.title}
-                </h3>
             </div>
 
             <CardContent className="p-4">
+                {/* Property Title */}
+                <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                    {property.title}
+                </h3>
+
                 {/* Special Features */}
-                <div className="flex flex-wrap gap-1 mb-3 space-around">
-                    {property.experiences && property.experiences.length > 0 && (
-                        <Badge
-                            variant="outline"
-                            className="text-xs border-accent text-accent"
-                        >
-                            <Gift className="h-3 w-3 mr-1" /> Free Experience <span className="text-purple-300 text-xs font-bold rounded-full">({property.experiences.length})  </span>
-                        </Badge>
-                    )}
+                <div className="flex flex-wrap gap-1 mb-3">
+                    {property.experiences &&
+                        property.experiences.length > 0 && (
+                            <Badge
+                                variant="outline"
+                                className="text-xs border-gray-300 text-gray-700"
+                            >
+                                <Gift className="h-3 w-3 mr-1" /> Free
+                                Experience{" "}
+                                <span className="text-purple-800 text-xs font-bold rounded-full">
+                                    ({property.experiences.length})
+                                </span>
+                            </Badge>
+                        )}
                     {property.coupons && property.coupons.length > 0 && (
                         <Badge
                             variant="outline"
@@ -173,42 +196,51 @@ export default function FeaturedPropertyCard({ property, layout = "grid" }) {
 
                 {/* Property Type and Beds */}
                 <div className="flex items-center justify-between mb-2">
-
                     <div className="flex items-center space-x-3 text-xs text-gray-600 mb-2">
                         <span className="flex items-center space-x-1">
                             <Users className="h-3 w-3" />
                             <span>{property.maxGuests} guests</span>
                         </span>
-                            <span className="flex items-center space-x-1">
+                        <span className="flex items-center space-x-1">
                             <Bed className="h-3 w-3" />
-                            <span>{property.beds} bed{property.beds > 1 ? 's' : ''}</span>
+                            <span>
+                                {property.beds} bed
+                                {property.beds > 1 ? "s" : ""}
+                            </span>
                         </span>
-                            <span className="flex items-center space-x-1">
+                        <span className="flex items-center space-x-1">
                             <Bath className="h-3 w-3" />
                             <span>{property.bathrooms} bath</span>
                         </span>
                     </div>
                     <div className="flex items-center space-x-1">
                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">{property.rating}</span>
+                        <span className="text-sm font-medium">
+                            {property.rating}
+                        </span>
                     </div>
                 </div>
 
                 {/* Host Language */}
-                <p className="text-xs text-gray-500 mb-3">🗣️ Host speaks {property.host.languages.join(', ')}</p>
+                <p className="text-xs text-gray-500 mb-3">
+                    🗣️ Host speaks {property.host.languages.join(", ")}
+                </p>
 
                 {/* Price */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <span className="text-lg font-bold text-gray-900">${property.pricePerNight}</span>
+                        <span className="text-lg font-bold text-gray-900">
+                            ${property.pricePerNight}
+                        </span>
                         <span className="text-sm text-gray-600">/night</span>
                     </div>
                     <div className="text-right">
-                        <div className="text-xs text-green-600 font-medium">Save</div>
+                        <div className="text-xs text-green-600 font-medium">
+                            Save
+                        </div>
                         <div className="text-xs text-green-600">25% off</div>
                     </div>
                 </div>
-
             </CardContent>
         </Card>
     );
