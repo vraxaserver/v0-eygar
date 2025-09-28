@@ -48,7 +48,7 @@ export default function DashboardPage() {
     } else if (role === "vendor") {
         return <VendorDashboard />;
     } else {
-        return <GuestDashboard />;
+        return <VendorDashboard />;
     }
 
 }
