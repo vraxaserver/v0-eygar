@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Star, ChevronLeft, ChevronRight } from "lucide-react"; // Replaced SVG with Lucide icons
 import Image from "next/image";
+import {formatCurrency} from "@/lib/utils"
+
 
 export default function PropertyCard({ property }) {
     const router = useRouter();
@@ -137,7 +139,9 @@ export default function PropertyCard({ property }) {
                     <p className="text-gray-500 text-sm mb-2">{locationString}</p>
                     
                     <div className="flex items-baseline space-x-1">
-                        <span className="font-bold text-lg text-gray-900">${property.pricePerNight}</span>
+                        <span className="text-lg font-bold text-gray-900">
+                            {formatCurrency(property.price_per_night, property.currency)}
+                        </span>
                         <span className="text-gray-600 text-sm">/ night</span>
                     </div>
                 </div>

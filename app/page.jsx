@@ -1,5 +1,3 @@
-"use client"
-
 import FeaturedSection from "@/components/home/FeaturedSection"
 import SafetySection from "@/components/home/SafetySection"
 import ExperiencesSection from "@/components/home/ExperiencesSection"
