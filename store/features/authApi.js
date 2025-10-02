@@ -73,6 +73,8 @@ export const authApi = createApi({
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
+                    console.log("==========================================")
+                    console.log(data)
                     dispatch(setCredentials(data));
 
                     // Redirect after successful login

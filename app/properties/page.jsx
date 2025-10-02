@@ -89,7 +89,7 @@ export default function PropertyListings() {
                 {viewMode === "grid" && (
                     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
                         {properties &&
-                            properties.map((property) => (
+                            properties.items.map((property) => (
                                 <PropertyCard
                                     className="py-0"
                                     key={property.id}
@@ -102,7 +102,7 @@ export default function PropertyListings() {
                 {viewMode === "list" && (
                     <div className="space-y-4 sm:space-y-6">
                         {properties &&
-                            properties.map((property) => (
+                            properties.items.map((property) => (
                                 <Card
                                     key={property.id}
                                     className="group cursor-pointer border border-gray-200 hover:shadow-lg transition-all duration-300"

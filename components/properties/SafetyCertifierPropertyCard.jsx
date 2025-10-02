@@ -92,7 +92,7 @@ export default function SafetyCertifierPropertyCard({ property }) {
                     <div className="flex items-center justify-between mb-2">
                         <div>
                             <span className="text-lg font-bold text-gray-900">
-                                ${property.pricePerNight}
+                                ${property.price_per_night}
                             </span>
                             <span className="text-sm text-gray-600">
                                 {" "}
@@ -103,7 +103,7 @@ export default function SafetyCertifierPropertyCard({ property }) {
 
                     {/* Host Language */}
                     <p className="text-xs text-gray-500">
-                        🗣️ Host speaks {property.host.languages.join(", ")}
+                        🗣️ Host speaks {property?.host?.languages.join(", ")}
                     </p>
                 </div>
             </div>

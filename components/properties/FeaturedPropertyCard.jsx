@@ -223,14 +223,14 @@ export default function FeaturedPropertyCard({ property, layout = "grid" }) {
 
                 {/* Host Language */}
                 <p className="text-xs text-gray-500 mb-3">
-                    🗣️ Host speaks {property.host.languages.join(", ")}
+                    🗣️ Host speaks {property?.host?.languages.join(", ")}
                 </p>
 
                 {/* Price */}
                 <div className="flex items-center justify-between">
                     <div>
                         <span className="text-lg font-bold text-gray-900">
-                            ${property.pricePerNight}
+                            ${property.price_per_night}
                         </span>
                         <span className="text-sm text-gray-600">/night</span>
                     </div>

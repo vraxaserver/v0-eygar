@@ -86,7 +86,7 @@ const Page = () => {
         
         // If there's an error fetching status, log it. You might want to show a UI message.
         if (error) {
-            console.error("Error checking host status:", error);
+            console.log("Error checking host status:", error);
         }
 
         // If no redirection has occurred, ensure the role is set to 'host'

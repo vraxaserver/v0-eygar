@@ -43,12 +43,12 @@ export default function DashboardPage() {
     // }
 
     // This is the core logic: render based on user role
-    if (role === 'host') {
+    if (role === "host") {
         return <HostDashboard />;
     } else if (role === "vendor") {
         return <VendorDashboard />;
     } else {
-        return <VendorDashboard />;
+        return <GuestDashboard />;
     }
 
 }

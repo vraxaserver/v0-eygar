@@ -214,7 +214,7 @@ export default function CreateBusinessProfilePage() {
             router.push("/become-a-host/verify-identity");
 
         } catch (error) {
-            console.error('Error submitting form:', error);
+            console.log('Error submitting form:', error);
             // RTK Query errors may be objects; normalize a message
             const message = (error?.data?.detail) || error?.error || 'Failed to save profile. Please try again.';
             setErrors({ submit: message });
