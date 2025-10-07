@@ -51,6 +51,9 @@ export default function FeaturedPropertyCard({ property, layout = "grid" }) {
                         src={property.images[currentImageIndex] || "/placeholder.svg"}
                         alt={property.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 
+           (max-width: 1200px) 50vw, 
+           33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-200 rounded-t-2xl"
                     />
 

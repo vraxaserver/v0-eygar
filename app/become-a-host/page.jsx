@@ -30,9 +30,9 @@ const Page = () => {
     // Use the RTK Query hook. It will only run if the user is authenticated.
     // It automatically handles fetching, caching, loading, and error states.
     const { data, error, isLoading, isFetching } = useGetCurrentStatusQuery(undefined, {
-        skip: !isAuthenticated,
-    });
-
+            skip: !isAuthenticated,
+        });
+        
     useEffect(() => {
         // First, handle authentication. If not authenticated, redirect to login.
         if (!isAuthenticated) {
@@ -44,18 +44,24 @@ const Page = () => {
         if (isLoading || isFetching) {
             return;
         }
-        
-        // Once data is available, process the redirection logic.
-        if (data) {
-            console.log('data', data)
-             // Check if host profile is fully submitted and under review
-            if (data.completion_percentage === 100 && data.status === "approved") {
-                if (role !== "host") {
-                    dispatch(updateRole("host"));
-                }
-                router.push("/dashboard"); // Or a pending review page
-                return;
+
+        // If there's an error fetching status, log it. You might want to show a UI message.
+        if (error) {
+            console.log("Error checking host status:", error);
+        }
+
+        console.log('data', data)
+        // Check if host profile is fully submitted and under review
+        if (data.completion_percentage === 100 && data.status === "approved") {
+            if (role !== "host") {
+                dispatch(updateRole("host"));
             }
+            router.push("/dashboard"); // Or a pending review page
+            return;
+        }
+
+        if (data) {
+            
 
             // Check if there's an incomplete step and redirect
             if (data.current_step) {
@@ -83,19 +89,9 @@ const Page = () => {
                 return; // Stop execution after redirection
             }
         }
-        
-        // If there's an error fetching status, log it. You might want to show a UI message.
-        if (error) {
-            console.log("Error checking host status:", error);
-        }
 
-        // If no redirection has occurred, ensure the role is set to 'host'
-        // and allow the user to see the landing page.
-        if (role !== "host") {
-            dispatch(updateRole("host"));
-        }
+    }, [isAuthenticated, data, isLoading, isFetching,])
 
-    }, [isAuthenticated, data, isLoading, isFetching, error, role, dispatch, router]);
 
     // Show a loading screen while the hook is fetching and we decide where to go.
     if (isLoading || isFetching) {

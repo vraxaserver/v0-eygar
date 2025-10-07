@@ -10,6 +10,8 @@ import {formatCurrency} from "@/lib/utils"
 
 
 export default function PropertyCard({ property }) {
+    console.log("property :", property)
+    return <h1>Property</h1>
     const router = useRouter();
     // Initialize the favorited state from the property prop
     const [isFavorited, setIsFavorited] = useState(property.isLiked || false);
@@ -55,7 +57,7 @@ export default function PropertyCard({ property }) {
                     <div className="relative h-72 w-full">
                         <Image
                             
-                            src={property.images[currentImageIndex] || "/placeholder.svg"}
+                            src={property.images[currentImageIndex].image_url || "/placeholder.svg"}
                             alt={property.title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Example sizes

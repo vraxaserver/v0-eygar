@@ -11,6 +11,7 @@ import {
     selectIsAuthenticated,
     selectCurrentUser,
     selectCurrentRole,
+    updateRole
 } from "@/store/slices/authSlice";
 import { useLogoutUserMutation } from "@/store/features/authApi";
 
@@ -25,6 +26,7 @@ import {
 import { useLanguage, useTranslation } from "@/lib/i18n";
 
 export default function Header() {
+    const dispatch = useDispatch();
     const router = useRouter();
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const currentUser = useSelector(selectCurrentUser);
@@ -59,6 +61,17 @@ export default function Header() {
     const goToDashboard = () => {
         setShowUserMenu(false);
         router.push("/dashboard");
+    }
+
+    const becomeAVendor = () => {
+        setShowUserMenu(false);
+        router.push("/become-a-vendor");
+    }
+
+    const SwitchToTraveller = () => {
+        setShowUserMenu(false);
+        dispatch(updateRole("guest"));
+        router.push("/");
     }
 
     const goToSettings = () => {
@@ -109,12 +122,13 @@ export default function Header() {
                             </Link>
                         )}
 
-                        {role !== "vendor" && (
+                        {role === "host" && (
                             <Link
-                                href="/become-a-vendor"
+                                href="/"
                                 className="text-foreground hover:text-primary"
+                                onClick={SwitchToTraveller}
                             >
-                                <p>become a vendor</p>
+                                Switch to Traveller
                             </Link>
                         )}
 
@@ -189,6 +203,11 @@ export default function Header() {
                                             <DropdownMenuItem>
                                                 <button onClick={goToSettings}>
                                                     Settings
+                                                </button>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem>
+                                                <button onClick={becomeAVendor}>
+                                                    Become A Vendor
                                                 </button>
                                             </DropdownMenuItem>
 
