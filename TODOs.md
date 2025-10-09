@@ -6,3 +6,11 @@ Build a listing microservice for properties listing using fastapi and postgresql
 3. List featured properties
 4. List safety certified properties
 5. 
+
+## Todos for property listing service:
+- [x] List properties (public)
+- [x] Property details (public)
+- [] Get experiences
+- [] Get coupons
+- [] List amenities
+- [] Get reviews for host
