@@ -106,7 +106,7 @@ export const authApi = createApi({
 
         // Get current user profile
         getProfile: builder.query({
-            query: () => "/auth/me/",
+            query: () => "/auth/profile/",
             providesTags: ["User"],
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {

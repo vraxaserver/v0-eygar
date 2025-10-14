@@ -6,7 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { stats, properties, upcomingBookings, ongoingBookings, experiences } from "./hostMockData"; // Example: move mock data out
+import {
+    stats,
+    upcomingBookings,
+    ongoingBookings,
+    experiences,
+} from "./hostMockData"; // Example: move mock data out
 import {
     Home,
     Calendar,
@@ -31,6 +36,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/slices/authSlice";
 import { getStatusColor } from "@/lib/utils";
+import { useCreatePropertyMutation, useGetMyPropertiesQuery } from "@/store/features/propertiesApi";
 
 // --- Lazy Load Components ---
 const AddPropertyModal = React.lazy(() => import("./AddPropertyModal"));
@@ -42,10 +48,17 @@ const TabMyExperiences = React.lazy(() => import("./TabMyExperiences"));
 const TabAnalytics = React.lazy(() => import("./TabAnalytics"));
 
 // A simple loading component for Suspense fallback
-const LoadingFallback = () => <div className="p-10 text-center">Loading...</div>;
-
+const LoadingFallback = () => (
+    <div className="p-10 text-center">Loading...</div>
+);
 
 export default function HostDashboard() {
+    const [createProperty, { isLoading, error }] = useCreatePropertyMutation();
+    const {data: properties} = useGetMyPropertiesQuery()
+
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [isUploading, setIsUploading] = useState(false);
+
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const user = useSelector(selectCurrentUser);
     console.log("user: ", user);
@@ -55,7 +68,8 @@ export default function HostDashboard() {
         // Step 1: Basic Info
         title: "",
         description: "",
-        property_type: "entire_place",
+        property_type: "house",
+        place_type: "entire_place",
         bedrooms: 1,
         beds: 1,
         bathrooms: 1,
@@ -167,14 +181,211 @@ export default function HostDashboard() {
         if (currentStep > 1) setCurrentStep(currentStep - 1);
     };
 
-    const handleSubmit = () => {
-        console.log("Submitting property:", formData);
-        // Add API call here
-        setShowAddModal(false);
-        setCurrentStep(1);
+    const blobUrlToFile = async (blobUrl, filename) => {
+        try {
+            const response = await fetch(blobUrl);
+            const blob = await response.blob();
+            return new File([blob], filename, { type: blob.type });
+        } catch (error) {
+            console.error("Error converting blob to file:", error);
+            throw error;
+        }
     };
 
-    
+    // Function to upload a single image
+    const uploadImage = async (imageFile, displayOrder, isCover, altText) => {
+        const formData = new FormData();
+        formData.append("image", imageFile);
+        formData.append("display_order", displayOrder);
+        formData.append("is_cover", isCover);
+        formData.append("alt_text", altText);
+
+        try {
+            // Get auth token from localStorage
+            const token = localStorage.getItem("access_token");
+
+            const response = await fetch(
+                "http://127.0.0.1:8001/api/v1/images/upload",
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                }
+            );
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(
+                    errorData.message ||
+                        `Failed to upload image: ${response.statusText}`
+                );
+            }
+
+            const data = await response.json();
+            return data.image_url; // Assuming API returns { image_url: "..." }
+        } catch (error) {
+            console.error("Image upload error:", error);
+            throw error;
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            setIsUploading(true);
+            setUploadProgress(0);
+
+            // Validate minimum images
+            if (formData.images.length < 5) {
+                alert("Please upload at least 5 images");
+                return;
+            }
+
+            // Step 1: Upload all images and get real URLs
+            console.log("Starting image upload process...");
+            const uploadedImages = [];
+            const totalImages = formData.images.length;
+
+            for (let i = 0; i < formData.images.length; i++) {
+                const imageData = formData.images[i];
+
+                console.log(`Uploading image ${i + 1}/${totalImages}...`);
+
+                // Convert blob URL to File object
+                const imageFile = await blobUrlToFile(
+                    imageData.image_url,
+                    imageData.alt_text || `image-${i}.jpg`
+                );
+
+                // Upload image and get URL
+                const imageUrl = await uploadImage(
+                    imageFile,
+                    imageData.display_order,
+                    imageData.is_cover,
+                    imageData.alt_text
+                );
+
+                uploadedImages.push({
+                    image_url: imageUrl, // Real URL from server
+                    display_order: imageData.display_order,
+                    is_cover: imageData.is_cover,
+                    alt_text: imageData.alt_text,
+                });
+
+                // Update progress
+                const progress = Math.round(((i + 1) / totalImages) * 100);
+                setUploadProgress(progress);
+                console.log(`Upload progress: ${progress}%`);
+            }
+
+            console.log("All images uploaded successfully!", uploadedImages);
+
+            // Step 2: Transform form data with real image URLs
+            const propertyData = {
+                title: formData.title,
+                description: formData.description,
+                property_type: formData.property_type,
+                place_type: formData.place_type,
+                bedrooms: parseInt(formData.bedrooms),
+                beds: parseInt(formData.beds),
+                bathrooms: parseFloat(formData.bathrooms),
+                max_guests: parseInt(formData.max_guests),
+                max_adults: parseInt(formData.max_adults),
+                max_children: parseInt(formData.max_children),
+                max_infants: parseInt(formData.max_infants),
+                pets_allowed: formData.pets_allowed,
+                price_per_night: parseFloat(formData.price_per_night),
+                currency: formData.currency,
+                cleaning_fee: parseFloat(formData.cleaning_fee),
+                service_fee: formData.service_fee
+                    ? parseFloat(formData.service_fee)
+                    : 0,
+                weekly_discount: parseFloat(formData.weekly_discount) || 0,
+                monthly_discount: parseFloat(formData.monthly_discount) || 0,
+                instant_book: formData.instant_book,
+                location: {
+                    address: formData.location.address,
+                    city: formData.location.city,
+                    state: formData.location.state,
+                    country: formData.location.country,
+                    postal_code: formData.location.postal_code,
+                    latitude: parseFloat(formData.location.latitude),
+                    longitude: parseFloat(formData.location.longitude),
+                },
+                images: uploadedImages, // Use uploaded image URLs
+                amenity_ids: formData.amenity_ids || [],
+                house_rules: formData.house_rules.filter(
+                    (rule) => rule.trim() !== ""
+                ),
+                cancellation_policy: formData.cancellation_policy,
+                check_in_policy: formData.check_in_policy,
+            };
+
+            console.log("Submitting property data:", propertyData);
+
+            // Step 3: Create property with real image URLs
+            const result = await createProperty(propertyData).unwrap();
+            console.log("Property created successfully:", result);
+
+            // Success! Close modal and reset
+            alert("Property created successfully!");
+            setShowAddModal(false);
+            setCurrentStep(1);
+
+            // Reset form data
+            setFormData({
+                title: "",
+                description: "",
+                property_type: "entire_place",
+                bedrooms: 1,
+                beds: 1,
+                bathrooms: 1,
+                max_guests: 2,
+                max_adults: 2,
+                max_children: 0,
+                max_infants: 0,
+                pets_allowed: false,
+                price_per_night: "",
+                currency: "USD",
+                cleaning_fee: "",
+                service_fee: "",
+                weekly_discount: 0,
+                monthly_discount: 0,
+                instant_book: false,
+                location: {
+                    address: "",
+                    city: "",
+                    state: "",
+                    country: "",
+                    postal_code: "",
+                    latitude: "",
+                    longitude: "",
+                },
+                images: [],
+                amenity_ids: [],
+                house_rules: [""],
+                cancellation_policy: "",
+                check_in_policy: "",
+            });
+        } catch (err) {
+            console.error("Failed to create property:", err);
+
+            if (err.status === 401) {
+                alert("Unauthorized: Please login");
+                // Redirect to login if needed
+            } else if (err.status === 403) {
+                alert(
+                    "Forbidden: You do not have permission to create properties"
+                );
+            } else {
+                alert(`Error: ${err.message || "Failed to create property"}`);
+            }
+        } finally {
+            setIsUploading(false);
+            setUploadProgress(0);
+        }
+    };
 
     const getStatusIcon = (status) => {
         switch (status) {
@@ -222,24 +433,52 @@ export default function HostDashboard() {
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Property Type *
-                            </label>
-                            <select
-                                name="property_type"
-                                value={formData.property_type}
-                                onChange={handleInputChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
-                            >
-                                <option value="entire_place">
-                                    Entire Place
-                                </option>
-                                <option value="private_room">
-                                    Private Room
-                                </option>
-                                <option value="shared_room">Shared Room</option>
-                            </select>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Property Type *
+                                </label>
+                                <select
+                                    name="property_type"
+                                    value={formData.property_type}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                                >
+                                    <option value="house">
+                                        House
+                                    </option>
+                                    <option value="apartment">
+                                        Apartment
+                                    </option>
+                                    <option value="guest_house">
+                                        Guest House
+                                    </option>
+                                    <option value="hotel">
+                                        Hotel
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Place Type
+                                </label>
+                                <select
+                                    name="place_type"
+                                    value={formData.place_type}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                                >
+                                    <option value="entire_place">
+                                        Entire Place
+                                    </option>
+                                    <option value="private_room">
+                                        Private Room
+                                    </option>
+                                    <option value="shared_room">
+                                        Shared Room
+                                    </option>
+                                </select>
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -713,7 +952,6 @@ export default function HostDashboard() {
                         Manage your properties, bookings, and guest experiences
                         all in one place.
                     </p>
-                    
                 </div>
 
                 {/* Stats Cards */}
@@ -790,12 +1028,18 @@ export default function HostDashboard() {
                     <Suspense fallback={<LoadingFallback />}>
                         {/* Overview Tab */}
                         <TabsContent value="overview" className="space-y-6">
-                            <TabOverview setShowAddModal={setShowAddModal} upcomingBookings={upcomingBookings} />
+                            <TabOverview
+                                setShowAddModal={setShowAddModal}
+                                upcomingBookings={upcomingBookings}
+                            />
                         </TabsContent>
 
                         {/* Properties Tab */}
                         <TabsContent value="properties" className="space-y-6">
-                            <TabMyProperty setShowAddModal={setShowAddModal} properties={properties} />
+                            <TabMyProperty
+                                setShowAddModal={setShowAddModal}
+                                properties={properties}
+                            />
                         </TabsContent>
 
                         {/* Bookings Tab */}
@@ -826,7 +1070,10 @@ export default function HostDashboard() {
                                     </TabsTrigger>
                                 </TabsList>
 
-                                <TabsContent value="upcoming" className="space-y-4">
+                                <TabsContent
+                                    value="upcoming"
+                                    className="space-y-4"
+                                >
                                     {upcomingBookings.map((booking) => (
                                         <Card key={booking.id}>
                                             <CardContent className="p-6">
@@ -834,10 +1081,15 @@ export default function HostDashboard() {
                                                     <div className="flex items-center space-x-4">
                                                         <Avatar className="w-12 h-12">
                                                             <AvatarImage
-                                                                src={booking.avatar}
+                                                                src={
+                                                                    booking.avatar
+                                                                }
                                                             />
                                                             <AvatarFallback>
-                                                                {booking.guest[0]}
+                                                                {
+                                                                    booking
+                                                                        .guest[0]
+                                                                }
                                                             </AvatarFallback>
                                                         </Avatar>
                                                         <div>
@@ -845,7 +1097,9 @@ export default function HostDashboard() {
                                                                 {booking.guest}
                                                             </div>
                                                             <div className="text-sm text-gray-600">
-                                                                {booking.property}
+                                                                {
+                                                                    booking.property
+                                                                }
                                                             </div>
                                                             <div className="text-sm text-gray-500">
                                                                 {new Date(
@@ -905,7 +1159,10 @@ export default function HostDashboard() {
                                     ))}
                                 </TabsContent>
 
-                                <TabsContent value="ongoing" className="space-y-4">
+                                <TabsContent
+                                    value="ongoing"
+                                    className="space-y-4"
+                                >
                                     {ongoingBookings.map((booking) => (
                                         <Card key={booking.id}>
                                             <CardContent className="p-6">
@@ -913,10 +1170,15 @@ export default function HostDashboard() {
                                                     <div className="flex items-center space-x-4">
                                                         <Avatar className="w-12 h-12">
                                                             <AvatarImage
-                                                                src={booking.avatar}
+                                                                src={
+                                                                    booking.avatar
+                                                                }
                                                             />
                                                             <AvatarFallback>
-                                                                {booking.guest[0]}
+                                                                {
+                                                                    booking
+                                                                        .guest[0]
+                                                                }
                                                             </AvatarFallback>
                                                         </Avatar>
                                                         <div>
@@ -924,7 +1186,9 @@ export default function HostDashboard() {
                                                                 {booking.guest}
                                                             </div>
                                                             <div className="text-sm text-gray-600">
-                                                                {booking.property}
+                                                                {
+                                                                    booking.property
+                                                                }
                                                             </div>
                                                             <div className="text-sm text-gray-500">
                                                                 {new Date(

@@ -1,3 +1,6 @@
+import { X, Upload } from "lucide-react";
+import Image from "next/image";
+
 export const renderStepContent = () => {
     switch(currentStep) {
       case 1:
@@ -248,7 +251,7 @@ export const renderStepContent = () => {
                 <div className="grid grid-cols-3 gap-4">
                   {formData.images.map((img, index) => (
                     <div key={index} className="relative group">
-                      <img
+                      <Image
                         src={img.image_url}
                         alt={img.alt_text}
                         className="w-full h-32 object-cover rounded-lg"

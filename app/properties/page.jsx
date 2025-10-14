@@ -10,11 +10,16 @@ import PropertyCard from "@/components/properties/PropertyCard";
 import { useGetPropertiesQuery } from "@/store/features/propertiesApi";
 import SearchBar from "@/components/search/SearchBar";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/store/slices/authSlice";
 
 export default function PropertyListings() {
+    const user = useSelector(selectCurrentUser);
     const [viewMode, setViewMode] = useState("grid");
     const { filters } = useState();
     const [category, setCategory] = useState("");
+
+    const currentUserId = user?.eygar_host?.id 
 
     const { data: properties, isLoading, error } = useGetPropertiesQuery();
 
@@ -94,6 +99,7 @@ export default function PropertyListings() {
                                     className="py-0"
                                     key={property.id}
                                     property={property}
+                                    currentUserId={currentUserId}
                                 />
                             ))}
                     </div>
@@ -112,7 +118,7 @@ export default function PropertyListings() {
                                             {/* Image */}
                                             <div className="relative w-full sm:w-80 h-56 sm:h-64 flex-shrink-0">
                                                 <Image
-                                                    src={property.image}
+                                                    src={property.images[0]}
                                                     alt={property.title}
                                                     fill
                                                     priority   

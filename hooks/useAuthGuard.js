@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { selectIsAuthenticated } from "../../store/features/auth/authSlice";
+import { selectIsAuthenticated } from "@/store/features/auth/authSlice";
 
 export const useAuthGuard = (options = {}) => {
     const {

@@ -21,6 +21,7 @@ export default function DashboardPage() {
     const router = useRouter();
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const role = useSelector(selectCurrentRole)
+    console.log("role: ", role)
     
     if(!isAuthenticated) {
         router.push("/login");
