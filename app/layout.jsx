@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 
 import "@/styles/globals.css";
+import LocationFetcher from "@/components/LocationFetcher";
 
 const montserrat = Montserrat({
     subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({ children }) {
             <body>
                 <ReduxProvider>
                     <div className="min-h-screen">
+                        <LocationFetcher /> 
                         <Header />
                         
                         {/* Main Content */}

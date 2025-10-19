@@ -7,7 +7,11 @@ const initialState = {
     totalResults: 0,
     currentPage: 1,
     filters: {
-        location: '',
+        location: {
+            city: "",
+            lat: null,
+            lon: null
+        },
         checkIn: null,
         checkOut: null,
         guests: {
@@ -17,8 +21,10 @@ const initialState = {
         },
         priceRange: [0, 1000],
         propertyType: '',
+        placeType: '',
         badges: [],
         amenities: [],
+        categories: [],
     },
     sortBy: 'price_low_high',
 };
