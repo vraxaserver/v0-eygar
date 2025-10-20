@@ -13,12 +13,14 @@ import { Badge } from '@/components/ui/badge';
 import { setFilters, setSearchQuery } from '@/store/slices/searchSlice';
 import { useGetCategoriesQuery } from '@/store/features/categoryApi';
 import LocationSearch from '@/components/LocationSearch';
+import { useRouter } from "next/navigation";
 
 const PROPERTIES_API_URL =
     process.env.PROPERTIES_API_URL ||
     "http://127.0.0.1:8001/api/v1/";
 
 const SearchBar = () => {
+    const router = useRouter()
     const dispatch = useDispatch();
     const reduxFilters = useSelector((state) => state.search.filters);
     const reduxSearchQuery = useSelector((state) => state.search.searchQuery);
@@ -136,6 +138,7 @@ const SearchBar = () => {
         console.log(filterData)
         
         setShowFilters(false);
+        // router.push("/properties/")
     };
 
     const formatDate = (date) => {
