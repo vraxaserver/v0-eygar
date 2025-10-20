@@ -40,7 +40,7 @@ export const propertiesApi = createApi({
         getProperties: builder.query({
             query: (params = {}) => {
                 const { page = 1, ...filters } = params;
-                console.log("=============params=============")
+                console.log("=============params inside rtk query=============")
                 console.log(params)
 
                 // Build query string from filters
@@ -58,7 +58,7 @@ export const propertiesApi = createApi({
                     }
                 });
                 console.log(queryParams.toString())
-                return `properties/?${queryParams.toString()}`;
+                return `properties/search?${queryParams.toString()}`;
             },
             providesTags: (result) =>
                 result

@@ -23,10 +23,11 @@ const SearchBar = () => {
     const router = useRouter()
     const dispatch = useDispatch();
     const reduxFilters = useSelector((state) => state.search.filters);
-    const reduxSearchQuery = useSelector((state) => state.search.searchQuery);
+    // const reduxSearchQuery = useSelector((state) => state.search.searchQuery);
+    const reduxSearch = useSelector((state) => state.search);
 
-    const [searchQueryLocal, setSearchQueryLocal] = useState(reduxSearchQuery || "");
-    const [location, setLocation] = useState({name: "", city: "", lat: null, lng: null, error: ""});
+    // const [searchQueryLocal, setSearchQueryLocal] = useState(reduxSearchQuery || "");
+    // const [location, setLocation] = useState({name: "", city: "", lat: null, lon: null, error: ""});
     const [checkInDate, setCheckInDate] = useState(reduxFilters.checkIn ? new Date(reduxFilters.checkIn) : undefined);
     const [checkOutDate, setCheckOutDate] = useState(reduxFilters.checkOut ? new Date(reduxFilters.checkOut) : undefined);
     const [isGuestDropdownOpen, setIsGuestDropdownOpen] = useState(false);
@@ -50,20 +51,6 @@ const SearchBar = () => {
     const [isLoadingAmenities, setIsLoadingAmenities] = useState(false);
 
     const totalGuests = adults + children;
-
-    // const categories = [
-    //     { value: "", label: "Any type" },
-    //     { value: "beachfront", label: "Beachfront" },
-    //     { value: "cabins", label: "Cabins" },
-    //     { value: "trending", label: "Trending" },
-    //     { value: "tropical", label: "Tropical" },
-    //     { value: "unique_stays", label: "Unique stays" },
-    //     { value: "castles", label: "Castles" },
-    //     { value: "countryside", label: "Countryside" },
-    //     { value: "design", label: "Design" },
-    //     { value: "islands", label: "Islands" },
-    //     { value: "lakefront", label: "Lakefront" },
-    // ];
 
     // Fetch amenities from API
     useEffect(() => {
@@ -110,11 +97,11 @@ const SearchBar = () => {
 
     const handleSearch = () => {
         // Update Redux state with search query
-        dispatch(setSearchQuery(searchQueryLocal));
+        // dispatch(setSearchQuery(searchQueryLocal));
 
         // Build filter object
         const filterData = {
-            location: location,
+            
             checkIn: checkInDate ? checkInDate.toISOString().split('T')[0] : null,
             checkOut: checkOutDate ? checkOutDate.toISOString().split('T')[0] : null,
             guests: {
@@ -134,9 +121,6 @@ const SearchBar = () => {
         // Update Redux filters
         dispatch(setFilters(filterData));
 
-        console.log("==============filterData=============")
-        console.log(filterData)
-        
         setShowFilters(false);
         // router.push("/properties/")
     };
@@ -164,17 +148,16 @@ const SearchBar = () => {
         setPropertyTypes([]);
         setAmenities([]);
         setHasExperiences(false);
-        setSearchQueryLocal("");
         setCheckInDate(undefined);
         setCheckOutDate(undefined);
         setAdults(0);
         setChildren(0);
-        setSelectedCategory("");
+        setSelectedCategory('');
         
         // Clear Redux state
         dispatch(setSearchQuery(""));
+        dispatch(setLocation({}))
         dispatch(setFilters({
-            location: '',
             checkIn: null,
             checkOut: null,
             guests: {
@@ -247,7 +230,7 @@ const SearchBar = () => {
                                 }}
                                 className="border-0 focus-visible:ring-0 text-sm font-medium"
                             /> */}
-                            <LocationSearch setloc={setLocation} />
+                            <LocationSearch />
                         </div>
 
                         <div className="border-l border-gray-300">

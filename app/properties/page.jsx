@@ -12,14 +12,10 @@ import { useGetPropertiesQuery } from "@/store/features/propertiesApi";
 import SearchBar from "@/components/search/SearchBar";
 import Image from "next/image";
 import { selectCurrentUser } from "@/store/slices/authSlice";
-import { selectLocation } from "@/store/slices/locationSlice";
-
 
 export default function PropertyListings() {
     const user = useSelector(selectCurrentUser);
-    const loc = useSelector(selectLocation);
-    console.log("============Location=============")
-    console.log(loc)
+    const reduxSearch = useSelector((state) => state.search);
     const reduxFilters = useSelector((state) => state.search.filters);
     const reduxSearchQuery = useSelector((state) => state.search.searchQuery);
     
@@ -95,12 +91,15 @@ export default function PropertyListings() {
             params.has_experiences = reduxFilters.has_experiences;
         }
 
+        if(reduxSearch.location?.city) {
+            params.location = reduxSearch.location?.city
+            params.country = reduxSearch.location?.country
+        }
+
         return params;
     };
 
     const queryParams = buildQueryParams();
-    console.log("==============queryParams==============")
-    console.log(queryParams)
 
     const { data: properties, isLoading, error, isFetching } = useGetPropertiesQuery(queryParams);
 

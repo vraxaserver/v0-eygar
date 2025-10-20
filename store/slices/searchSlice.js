@@ -6,12 +6,14 @@ const initialState = {
     loading: false,
     totalResults: 0,
     currentPage: 1,
+    location: {
+        name: "",
+        country: "",
+        city: "",
+        lat: null,
+        lon: null
+    },
     filters: {
-        location: {
-            city: "",
-            lat: null,
-            lon: null
-        },
         checkIn: null,
         checkOut: null,
         guests: {
@@ -34,7 +36,7 @@ const searchSlice = createSlice({
     initialState,
     reducers: {
         setLocation: (state, action) => {
-            state.filters.location = action.payload;
+            state.location = action.payload;
         },
         setDates: (state, action) => {
             state.filters.checkIn = action.payload.checkIn;
